@@ -7,6 +7,22 @@ hub:
   ## ref: https://hub.docker.com/r/dosel/zalenium/tags
   tag: "3"
 
+  ##DNS 
+  dnsPolicy: "None"
+  dnsConfig:
+    nameservers:
+      - 10.113.55.28
+      - 10.113.56.101  
+    searches:
+      - si.orange.es
+      - es.ftgroup
+      - amena.es
+      - uni2.es
+      - jazztel.com
+    ##options:
+    ##  - name: ndots
+    ##    value: 2
+    ##  -name: edns0  
   ## Specify a imagePullPolicy
   ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
   pullPolicy: "IfNotPresent"
@@ -72,7 +88,14 @@ hub:
 
   # Annotations to be added to the service.
   ##
-  serviceAnnotations: {}
+  #serviceAnnotations: {}
+  serviceAnnotations:
+    d-engine.ip6n.net/ipv4: "auto"
+    d-engine.ip6n.net/vs-hub-desc: "HTTP traffic"
+    d-engine.ip6n.net/vs-hub-vsProto: "TCP"
+    d-engine.ip6n.net/vs-hub-template: vs-tcp
+    d-engine.ip6n.net/vs-hub-vsPort: "4444"
+    d-engine.ip6n.net/vs-hub-fwPermit: 0.0.0.0/0
   # Below we expose metrics to Prometheus.
   #   prometheus.io/path: /metrics
   #   prometheus.io/scrape: "true"
@@ -96,7 +119,7 @@ hub:
   debugEnabled: false
   keepOnlyFailedTests: false
   retentionPeriod: 3
-  sendAnonymousUsageInfo: true
+  sendAnonymousUsageInfo: false
   basicAuth:
     enabled: false
     username: "zalenium"
@@ -171,7 +194,8 @@ ingress:
   enabled: false
   tls: false
   # secretName: my-tls-cert # only needed if tls above is true
-  hostname: zalenium.foobar.com
+  #hostname: zalenium.foobar.com
+  hostname: /gcs.zalenium.orange.es
   # If your ingress host name is shared with multiple
   # applications, Enter a path starting with / (eg. /zalenium)
   # If your ingress host name is only for Zalenium,

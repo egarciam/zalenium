@@ -40,6 +40,17 @@ spec:
     - name: {{ .Chart.Name }}
       image: "{{ .Values.hub.image }}:{{ .Values.hub.tag }}"
       imagePullPolicy: {{ .Values.hub.pullPolicy }}
+      dnsPolicy: {{ .Values.hub.dnsPolicy | quote }}
+      dnsConfig:  
+        nameservers: |-
+          {{- range .Values.hub.dnsConfig.nameservers }}
+          - {{ . | quote }}
+          {{- end }}
+        searches: |-
+          {{- range .Values.hub.dnsConfig.searches }}
+          - {{ . | quote }}
+          {{- end }}
+
       securityContext:
         {{- toYaml .Values.hub.containerSecurityContext | nindent 8 }}
       ports:
